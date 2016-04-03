@@ -2,24 +2,28 @@
 #define SENSORS_H_
 
 #include "Arduino.h"
-// Variables
+// point to user defined variables
 int* front_input;              
 int* left_input;             
 int* right_input;
 
+// calibration variables
 int calR, calF, calL;
 
 const int FRONT_SENSOR = A0;  
 const int RIGHT_SENSOR = A1;  
 const int LEFT_SENSOR = A2;
 
-// initializes sensors
+// initializes sensor calibration variables
 // initializes calibration variables
 void sensors_calibrate() {
   calF = analogRead(FRONT_SENSOR);
   calR = analogRead(RIGHT_SENSOR);
   calL = analogRead(LEFT_SENSOR);
 }
+
+// links user variables to internal variables via pointers
+// also sets up setpoints
 void sensors_initialize(int* Right, int* Front, int* Left, int &Rsetpoint, int &Fsetpoint, int &Lsetpoint) {
   front_input = Front;              
   left_input = Left;             
@@ -52,10 +56,26 @@ void sensors_read() {
     *right_input = ~*right_input + 1; 
 }
 
+// returns actual sensor values, no calibration
 void sensors_actual() {
   *front_input = analogRead(FRONT_SENSOR);
   *right_input = analogRead(RIGHT_SENSOR);
   *left_input = analogRead(LEFT_SENSOR);
+}
+
+// returns front sensor value
+int sensors_getfront() {
+  return *front_input;
+}
+
+// returns left sensor value
+int sensors_getleft() {
+  return *left_input;
+}
+
+// returns right sensor value
+int sensors_getright() {
+  return *right_input;
 }
 
 #endif
