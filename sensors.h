@@ -20,11 +20,15 @@ void sensors_calibrate() {
   calR = analogRead(RIGHT_SENSOR);
   calL = analogRead(LEFT_SENSOR);
 }
-void sensors_initialize(int* Right, int* Front, int* Left) {
+void sensors_initialize(int* Right, int* Front, int* Left, int &Rsetpoint, int &Fsetpoint, int &Lsetpoint) {
   front_input = Front;              
   left_input = Left;             
   right_input = Right;  
   sensors_calibrate();
+  Fsetpoint = analogRead(FRONT_SENSOR);
+  Rsetpoint = analogRead(RIGHT_SENSOR);
+  Lsetpoint = analogRead(LEFT_SENSOR);
+ 
 }
 
 // reads & calibrates sensor inputs
@@ -46,6 +50,12 @@ void sensors_read() {
     *left_input = ~*left_input + 1;
   if(analogRead(RIGHT_SENSOR) - calR < 0)
     *right_input = ~*right_input + 1; 
+}
+
+void sensors_actual() {
+  *front_input = analogRead(FRONT_SENSOR);
+  *right_input = analogRead(RIGHT_SENSOR);
+  *left_input = analogRead(LEFT_SENSOR);
 }
 
 #endif
